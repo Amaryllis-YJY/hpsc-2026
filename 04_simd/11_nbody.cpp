@@ -25,7 +25,7 @@ int main() {
     __m512 yi_v = _mm512_set1_ps(y[i]);
 
     __m512i i_v = _mm512_set1_epi32(i);
-    __mmask16 mask = _mm512_cmp_epi32_mask(idx_v, i_v);
+    __mmask16 mask = _mm512_cmp_epi32_mask(idx_v, i_v, _MM_CMPINT_NE);
 
     __m512 rx_v = _mm512_sub_ps(xi_v, xj_v);
     __m512 ry_v = _mm512_sub_ps(yi_v, yj_v);
