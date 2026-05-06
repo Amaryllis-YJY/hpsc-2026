@@ -40,8 +40,8 @@ int main() {
     __m512 del_fx = _mm512_mul_ps(_mm512_mul_ps(rx_v, mj_v), inv_r3_v);
     __m512 del_fy = _mm512_mul_ps(_mm512_mul_ps(ry_v, mj_v), inv_r3_v);
 
-    fx[i] -= _mm512_mask_reduce_add_ps(del_fx, mask);
-    fy[i] -= _mm512_mask_reduce_add_ps(del_fy, mask);
+    fx[i] -= _mm512_mask_reduce_add_ps(mask, del_fx);
+    fy[i] -= _mm512_mask_reduce_add_ps(mask, del_fy);
 
     printf("%d %g %g\n", i, fx[i], fy[i]);
   }
