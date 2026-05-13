@@ -1,6 +1,9 @@
 #include <cstdio>
 #include <cstdlib>
 #include <vector>
+#include<cuda_runtime.h>
+#include<thrust/device_ptr.h>
+#include<thrust/scan.h>
 
 int main() {
   int n = 50;
