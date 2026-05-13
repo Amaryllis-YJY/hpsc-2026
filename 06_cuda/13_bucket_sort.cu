@@ -5,6 +5,43 @@
 #include<thrust/device_ptr.h>
 #include<thrust/scan.h>
 
+__global__ void initBucket(int *bucket, int range)
+{
+    int i = blockIdx.x * blockDim.x + threadIdx.x;
+    if (i < range)
+      bucket[i] = 0;
+}
+
+__global__ void countBuckets(int *key, int *bucket, int n)
+{
+    int i = blockIdx.x * blockDim.x + threadIdx.x;
+    if (i < n)
+      atomicAdd(&bucket[key[i]], 1);
+}
+
+__global__ void writeback(int *key, int *prefix, int n, int range)
+{
+    int tid = blockIdx.x * blockDim.x + threadIdx.x;
+    if (tid >= n)
+      return;
+
+    int lo = 0, hi = range - 1;
+    while (lo < hi)
+    {
+        int mid = (lo + hi + 1) / 2;
+        if (prefix[mid] <= tid)
+        {
+            lo = mid;
+        }
+        else
+        {
+            hi = mid - 1;
+        }
+    }
+    key[tid] = lo;
+}
+
+
 int main() {
   int n = 50;
   int range = 5;
